@@ -1,0 +1,2 @@
+C:\Users\j2017\SimGame\obj\Debug\NavMeshComponentsEditor.csproj.CoreCompileInputs.cache
+C:\Users\j2017\SimGame\obj\Debug\NavMeshComponentsEditor.csproj.AssemblyReference.cache

@@ -1,0 +1,2 @@
+C:\Users\j2017\SimGame\obj\Debug\UnityEditor.TestRunner.csproj.AssemblyReference.cache
+C:\Users\j2017\SimGame\obj\Debug\UnityEditor.TestRunner.csproj.CoreCompileInputs.cache

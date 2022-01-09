@@ -1,0 +1,2 @@
+C:\Users\j2017\SimGame\obj\Debug\Assembly-CSharp.csproj.AssemblyReference.cache
+C:\Users\j2017\SimGame\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
