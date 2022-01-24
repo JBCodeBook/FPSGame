@@ -8,7 +8,7 @@ public class Rifle : Weapon
 
     private void Awake()
     {
-        fireArmScript = FindObjectOfType<FireArmScript>();
+        fireArmScript = GetComponent<FireArmScript>();
     }
     public override void Use()
     {

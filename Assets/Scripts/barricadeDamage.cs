@@ -5,7 +5,7 @@ using UnityEngine;
 public class barricadeDamage : MonoBehaviour, IDamageable
 {
     Transform rb;
-    GameObject[] ChildrenOfObj;
+    GameObject ChildrenOfObj;
 
     public bool isDestoryed;
     public float _objectHealth;
@@ -15,6 +15,7 @@ public class barricadeDamage : MonoBehaviour, IDamageable
     private void Awake()
     {
         rb = GetComponent<Transform>();
+        //ChildrenOfObj = gameObject.GetComponentInChildren<GameObject>();
         _objectHealth = startHealth;
         isDestoryed = false;
     }
@@ -27,7 +28,7 @@ public class barricadeDamage : MonoBehaviour, IDamageable
         {
             isDestoryed = true;
 
-            Destroy(gameObject);
+            gameObject.active = false;
         }
     }
 }

@@ -35,9 +35,9 @@ public class FireArmScript : Weapon
     // --- Projectile ---
     [Tooltip("The projectile gameobject to instantiate each time the weapon is fired.")]
     public GameObject projectilePrefab;
-    //[Tooltip("Sometimes a mesh will want to be disabled on fire. For example: when a rocket is fired, we instantiate a new rocket, and disable" +
-    //   " the visible rocket attached to the rocket launcher")]
-    //public GameObject projectileToDisableOnFire;
+    /*[Tooltip("Sometimes a mesh will want to be disabled on fire. For example: when a rocket is fired, we instantiate a new rocket, and disable" +
+       " the visible rocket attached to the rocket launcher")]
+    public GameObject projectileToDisableOnFire;*/
 
     // --- Impact ---
     public enum LayersInGame
@@ -56,7 +56,7 @@ public class FireArmScript : Weapon
 
     private void Awake()
     {
-        cameraManager = GetComponentInParent<CameraManager>();
+        cameraManager = FindObjectOfType<CameraManager>();
         damage = ((GunInfo)itemInfo).damage;
         range = ((GunInfo)itemInfo).range;
         bloom = ((GunInfo)itemInfo).bloom;
@@ -79,42 +79,37 @@ public class FireArmScript : Weapon
     /// </summary>
     public void FireWeapon()
     {
-        if (projectilePrefab != null)
-        {
-            GameObject newProjectile = Instantiate(projectilePrefab, muzzlePosition.transform.position, muzzlePosition.transform.rotation, transform);
-        }
-
-        Debug.Log(cameraManager.transform.position);
+        
         RaycastHit hit;
         if (Physics.Raycast(cameraManager.transform.position, cameraManager.transform.forward, out hit, range))
         {
+            Transform t_spawn = muzzlePosition.transform;
 
-
-            Transform t_spawn = cameraManager.transform;
-
-            /*for (int i = 0; i < Mathf.Max(1, currentGunData.pellets); i++)
+            for (int i = 0; i < Mathf.Max(1, currentGunData.pellets); i++)
             {
                 //bloom
                 Vector3 t_bloom = t_spawn.position + t_spawn.forward * 1000f;
                 t_bloom += Random.Range(-bloom, bloom) * t_spawn.up;
                 t_bloom += Random.Range(-bloom, bloom) * t_spawn.right;
                 t_bloom -= t_spawn.position;
-                t_bloom.Normalize();
+                t_bloom.Normalize(); 
 
                 //raycast
                 RaycastHit t_hit = new RaycastHit();
+
 
                 if (Physics.Raycast(t_spawn.position, t_bloom, out t_hit, 1000f))
                 {
                     GameObject t_newHole;
                     GameObject impactGO;
+
+
                     switch (t_hit.collider.gameObject.layer)
                     {
                         case (int)LayersInGame.WALL:
                             impactGO = Instantiate(impactEffect, t_hit.point, Quaternion.LookRotation(t_hit.normal));
                             impactGO.transform.parent = t_hit.transform;
                             Destroy(impactGO, 2f);
-
                             t_newHole = Instantiate(bulletholePrefab[2], t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
                             t_newHole.transform.LookAt(t_hit.point + t_hit.normal);
                             Destroy(t_newHole, 5f);
@@ -133,28 +128,29 @@ public class FireArmScript : Weapon
 
                     }
 
-                    
                     t_hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
 
-                    EnemyAITree enemryAI = hit.transform.GetComponent<EnemyAITree>();
+                    EnemyManager enemryAI = hit.transform.GetComponent<EnemyManager>();
 
                     if (enemryAI != null)
                     {
                         enemryAI.TakeDamage(damage);
                     }
-
-
-
                 }
-            }*/
-
-
-
+            }
         }
 
         // --- Spawn muzzle flash ---
-        var flash = Instantiate(muzzlePrefab, this.gameObject.transform.Find("MuzzlePosition").transform);
-        flash.gameObject.GetComponent<ParticleSystem>().Play();
+        //Transform muzzlePosition = this.gameObject.transform.Find("MuzzlePosition").transform;
+        if (muzzlePrefab != null & muzzlePosition != null)
+        {
+            var flash = Instantiate(muzzlePrefab, muzzlePosition.transform);
+            flash.gameObject.GetComponent<ParticleSystem>().Play();
+        }
+        else
+        {
+            Debug.Log("Missing Muzzle Components");
+        }
 
         // --- Handle Audio ---
         if (source != null)
